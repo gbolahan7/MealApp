@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+// import 'package:meal_app/screens/categories_screen.dart';
 import './dummy_data.dart';
 import './screens/filters_screen.dart';
 import './screens/tabs_screen.dart';
 
 import './screens/meal_detail_screen.dart';
 import './screens/category_meals_screen.dart';
-// import './screens/categories_screen.dart';
+import './screens/categories_screen.dart';
 import './models/meal.dart';
 
 void main() => runApp(MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Map<String, bool> _filters = {
-    'gluton': false,
+    'gluten': false,
     'lactose': false,
     'vegan': false,
     'vegetarian': false,
@@ -41,7 +42,6 @@ class _MyAppState extends State<MyApp> {
         if (_filters['vegetarian'] && !meal.isVegetarian) {
           return false;
         }
-
         return true;
       }).toList();
     });
@@ -76,14 +76,22 @@ class _MyAppState extends State<MyApp> {
         CategoryMealsScreen.routeName: (ctx) =>
             CategoryMealsScreen(_availableMeals),
         MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
-        FiltersScreen.routeName: (ctx) => FiltersScreen(_setFilters),
+        FiltersScreen.routeName: (ctx) => FiltersScreen(_filters, _setFilters),
       },
-      // onGenerateRoute: (settings) {
-      //   print(settings.arguments);
-      //   return MaterialPageRoute(
-      //     builder: (ctx) => CategoriesScreen(),
-      //   );
-      // },
+      onGenerateRoute: (settings) {
+        print(settings.arguments);
+        // if (settings.name == '/meal-detail') {
+        //   return ...;
+        // } else if (settings.name == '/something-else') {
+        //   return ...;
+        // }
+        // return MaterialPageRoute(builder: (ctx) => CategoriesScreen(),);
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (ctx) => CategoriesScreen(),
+        );
+      },
     );
   }
 }
